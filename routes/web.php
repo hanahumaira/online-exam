@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Lecturer\ClassroomController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +17,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('lecturer.')
         ->group(function () {
             Route::get('/dashboard', [DashboardController::class, 'lecturer'])->name('dashboard');
+            Route::resource('classrooms', ClassroomController::class);
         });
 
     Route::middleware('role:student')
