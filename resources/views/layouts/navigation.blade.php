@@ -22,6 +22,13 @@
                         >
                             {{ __('Classrooms') }}
                         </x-nav-link>
+
+                        <x-nav-link
+                            :href="route('lecturer.subjects.index')"
+                            :active="request()->routeIs('lecturer.subjects.*')"
+                        >
+                            {{ __('Subjects') }}
+                        </x-nav-link>
                     @endif
                 </div>
             </div>
@@ -85,6 +92,13 @@
                     :active="request()->routeIs('lecturer.classrooms.*')"
                 >
                     {{ __('Classrooms') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link
+                    :href="route('lecturer.subjects.index')"
+                    :active="request()->routeIs('lecturer.subjects.*')"
+                >
+                    {{ __('Subjects') }}
                 </x-responsive-nav-link>
             @endif
         </div>
