@@ -33,6 +33,9 @@ Build a secure web portal in which lecturers manage classes, subjects, exams, an
 - Only published exams are visible to eligible students.
 - A student can access an exam only when it is assigned to the student's class.
 - Access restrictions must be enforced by the server, not only by hidden buttons or links.
+- Lecturers can assign students only to classrooms they created.
+- Lecturers can manage unassigned students and students in their own classrooms.
+- Lecturers cannot reassign students belonging to another lecturer's classroom.
 - Each student is allowed only one attempt per exam.
 - The server records the attempt's start and expiry times.
 - The system automatically submits an attempt when its time expires.
