@@ -36,6 +36,11 @@ Build a secure web portal in which lecturers manage classes, subjects, exams, an
 - Lecturers can assign students only to classrooms they created.
 - Lecturers can manage unassigned students and students in their own classrooms.
 - Lecturers cannot reassign students belonging to another lecturer's classroom.
+- New exams are created as drafts.
+- A lecturer can create an exam only for a subject they created.
+- A lecturer can manage only exams they created.
+- Only draft exams can be edited or deleted.
+- Exam duration must be between 1 and 480 minutes.
 - Each student is allowed only one attempt per exam.
 - The server records the attempt's start and expiry times.
 - The system automatically submits an attempt when its time expires.

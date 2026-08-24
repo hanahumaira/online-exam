@@ -45,7 +45,7 @@ class Exam extends Model
 
     public function classrooms(): BelongsToMany
     {
-        return $this->belongsToMany(Classroom::class);
+        return $this->belongsToMany(Classroom::class, 'exam_classroom');
     }
 
     public function questions(): HasMany

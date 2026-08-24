@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Lecturer\ClassroomController;
+use App\Http\Controllers\Lecturer\ExamController;
 use App\Http\Controllers\Lecturer\StudentClassroomAssignmentController;
 use App\Http\Controllers\Lecturer\SubjectController;
 use App\Http\Controllers\ProfileController;
@@ -24,6 +25,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('students', [StudentClassroomAssignmentController::class, 'index'])->name('students.index');
             Route::get('students/{student}/classroom', [StudentClassroomAssignmentController::class, 'edit'])->name('students.classroom.edit');
             Route::put('students/{student}/classroom', [StudentClassroomAssignmentController::class, 'update'])->name('students.classroom.update');
+            Route::resource('exams', ExamController::class);
         });
 
     Route::middleware('role:student')

@@ -36,6 +36,13 @@
                         >
                             {{ __('Students') }}
                         </x-nav-link>
+
+                        <x-nav-link
+                            :href="route('lecturer.exams.index')"
+                            :active="request()->routeIs('lecturer.exams.*')"
+                        >
+                            {{ __('Exams') }}
+                        </x-nav-link>
                     @endif
                 </div>
             </div>
@@ -113,6 +120,13 @@
                     :active="request()->routeIs('lecturer.students.*')"
                 >
                     {{ __('Students') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link
+                    :href="route('lecturer.exams.index')"
+                    :active="request()->routeIs('lecturer.exams.*')"
+                >
+                    {{ __('Exams') }}
                 </x-responsive-nav-link>
             @endif
         </div>
