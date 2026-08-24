@@ -47,16 +47,20 @@ class ExamController extends Controller
     }
 
 
-    public function show(Exam $exam): View
+    public function show(Request $request, Exam $exam): View
     {
         Gate::authorize('view', $exam);
 
         $exam->load('subject:id,name,code');
         $exam->loadCount('questions');
 
+        $attempt = $exam->attempts()
+            ->where('user_id', $request->user()->id)
+            ->first();
+
         return view(
             'student.exams.show',
-            compact('exam'),
+            compact('exam', 'attempt'),
         );
     }
 }

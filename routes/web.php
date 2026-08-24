@@ -9,6 +9,7 @@ use App\Http\Controllers\Lecturer\StudentClassroomAssignmentController;
 use App\Http\Controllers\Lecturer\SubjectController;
 use App\Http\Controllers\Lecturer\ExamClassroomAssignmentController;
 use App\Http\Controllers\Lecturer\ExamPublishingController;
+use App\Http\Controllers\Student\AttemptController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -47,6 +48,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/dashboard', [DashboardController::class, 'student'])->name('dashboard');
             Route::get('/exams', [StudentExamController::class, 'index'])->name('exams.index');
             Route::get('/exams/{exam}', [StudentExamController::class, 'show'])->name('exams.show');
+            Route::post('exams/{exam}/attempts', [AttemptController::class, 'store'])->name('exams.attempts.store');
+            Route::get('attempts/{attempt}', [AttemptController::class, 'show'])->name('attempts.show');
+            Route::put('attempts/{attempt}', [AttemptController::class, 'update'])->name('attempts.update');
         });
 });
 
