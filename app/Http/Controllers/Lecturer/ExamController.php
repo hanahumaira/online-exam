@@ -101,6 +101,7 @@ class ExamController extends Controller
         $exam->load([
             'subject:id,name,code',
             'questions.options:id,question_id,text,is_correct',
+            'classrooms:id,name,code,created_by',
         ]);
 
         $exam->loadCount(['questions', 'classrooms']);

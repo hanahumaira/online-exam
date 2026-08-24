@@ -47,6 +47,16 @@ class ExamPolicy
         return $this->ownsExam($user, $exam) && $exam->published_at === null;
     }
 
+    public function assignClassrooms(User $user, Exam $exam,): bool
+    {
+        return $this->ownsExam($user, $exam) && $exam->published_at === null;
+    }
+
+    public function publish(User $user, Exam $exam): bool
+    {
+        return $this->ownsExam($user, $exam) && $exam->published_at === null;
+    }
+
     private function ownsExam(User $user, Exam $exam): bool
     {
         return $user->isLecturer() && $exam->created_by === $user->id;

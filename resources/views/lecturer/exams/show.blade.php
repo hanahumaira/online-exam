@@ -24,6 +24,12 @@
                 </div>
             @endif
 
+            @if (session('error'))
+                <div class="rounded-md bg-red-100 p-4 text-red-800">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                 <div class="p-6">
                     <dl class="grid gap-4 sm:grid-cols-2">
@@ -46,6 +52,23 @@
                                 {{ $exam->duration_minutes }} minutes
                             </dd>
                         </div>
+
+                        <div>
+                            <dt class="text-sm font-medium text-gray-500">
+                                Status
+                            </dt>
+
+                            <dd class="mt-1 text-gray-900">
+                                @if ($exam->published_at)
+                                    Published on 
+                                    {{ $exam->published_at->format(
+                                        'd M Y, g:i A',
+                                    )}}
+                                @else
+                                    Draft
+                                @endif
+                            </dd>
+                        </div>
                     </dl>
                 </div>
             </div>
@@ -64,6 +87,48 @@
                         <p class="mt-4 text-sm text-gray-600">
                             No instructions have been provided.
                         </p>
+                    @endif
+                </div>
+            </div>
+
+            <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-gray-900">
+                            Assigned Classrooms
+                        </h3>
+    
+                        @if ($exam->published_at === null)
+                            <a
+                                href="{{ route(
+                                    'lecturer.exams.classrooms.edit',
+                                    $exam,
+                                ) }}"
+                                class="text-sm text-indigo-600 hover:text-indigo-900"
+                            >
+                                Manage Assignments
+                            </a>
+                        @endif
+                    </div>
+
+                    @if ($exam->classrooms->isEmpty())
+                        <p class="mt-4 text-sm text-gray-600">
+                            This exam is not assigned to any classroom.
+                        </p>
+                    @else
+                        <ul class="mt-4 divide-y divide-gray-200">
+                            @foreach ($exam->classrooms as $classroom)
+                                <li class="flex justify-between py-3">
+                                    <span class="font-medium text-gray-900">
+                                        {{ $classroom->name }}
+                                    </span>
+
+                                    <span class="text-sm text-gray-600">
+                                        {{ $classroom->code }}
+                                    </span>
+                                </li>
+                            @endforeach
+                        </ul>
                     @endif
                 </div>
             </div>
@@ -170,6 +235,67 @@
                                 </div>
                             @endforeach
                         </div>
+                    @endif
+                </div>
+            </div>
+
+            <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
+                <div class="p-6">
+                    <h3 class="text-lg font-semibold text-gray-900">
+                        Publication
+                    </h3>
+
+                    @if ($exam->published_at)
+                        <p class="mt-4 text-sm text-green-700">
+                            This exam was published on
+                            {{ $exam->published_at->format(
+                                'd M Y, g:i A',
+                            ) }}.
+                        </p>
+
+                        <p class="mt-2 text-sm text-gray-600">
+                            Published exams cannot be modified.
+                        </p>
+                    @else
+                        <p class="mt-4 text-sm text-gray-600">
+                            Before publishing, ensure the exam has at least
+                            one question and one assigned classroom.
+                        </p>
+
+                        <dl class="mt-4 grid gap-4 sm:grid-cols-2">
+                            <div>
+                                <dt class="text-sm text-gray-500">
+                                    Questions
+                                </dt>
+
+                                <dd class="font-medium text-gray-900">
+                                    {{ $exam->questions_count }}
+                                </dd>
+                            </div>
+
+                            <div>
+                                <dt class="text-sm text-gray-500">
+                                    Assigned Classrooms
+                                </dt>
+
+                                <dd class="font-medium text-gray-900">
+                                    {{ $exam->classrooms_count }}
+                                </dd>
+                            </div>
+                        </dl>
+
+                        <form 
+                            method="POST"
+                            action="{{ route('lecturer.exams.publish', $exam) }}"
+                            class="mt-6"
+                            onsubmit="return confirm('Publish this exam? It cannot be edited afterward.');"
+                        >
+                            @csrf
+
+                            <x-primary-button>
+                                {{ __('Publish Exam') }}
+                            </x-primary-button>
+                        </form>
                     @endif
                 </div>
             </div>

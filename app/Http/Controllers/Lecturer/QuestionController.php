@@ -157,7 +157,7 @@ class QuestionController extends Controller
             'options.1' => [Rule::requiredIf($isMultipleChoice), 'string', 'max:1000'],
             'options.2' => [Rule::requiredIf($isMultipleChoice), 'string', 'max:1000'],
             'options.3' => [Rule::requiredIf($isMultipleChoice), 'string', 'max:1000'],
-            'correct_option' => [Rule::requiredIf($isMultipleChoice), 'nullable', 'integer', 'between:0.3'],
+            'correct_option' => [Rule::requiredIf($isMultipleChoice), 'nullable', 'integer', 'between:0,3'],
         ]);
 
         if (

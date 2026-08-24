@@ -48,6 +48,13 @@ Build a secure web portal in which lecturers manage classes, subjects, exams, an
 - Multiple-choice questions must have between two and four options.
 - Multiple-choice questions must have exactly one correct option.
 - Open-text questions do not have answer options.
+- An exam can be assigned only to classrooms that include the exam's subject.
+- Lecturers can assign exams only to classrooms they created.
+- Classroom assignments can be changed only while the exam is a draft.
+- An exam requires at least one question and one assigned classroom before publication.
+- Every multiple-choice question must have at least two options and exactly one correct option before publication.
+- Publishing an exam is irreversible.
+- Published exams cannot be edited, deleted, or have their questions or classroom assignments changed.
 - Each student is allowed only one attempt per exam.
 - The server records the attempt's start and expiry times.
 - The system automatically submits an attempt when its time expires.
