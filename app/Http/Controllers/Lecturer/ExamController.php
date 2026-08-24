@@ -98,7 +98,11 @@ class ExamController extends Controller
     {
         Gate::authorize('view', $exam);
 
-        $exam->load('subject:id,name,code');
+        $exam->load([
+            'subject:id,name,code',
+            'questions.options:id,question_id,text,is_correct',
+        ]);
+
         $exam->loadCount(['questions', 'classrooms']);
 
         return view(

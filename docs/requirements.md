@@ -41,6 +41,13 @@ Build a secure web portal in which lecturers manage classes, subjects, exams, an
 - A lecturer can manage only exams they created.
 - Only draft exams can be edited or deleted.
 - Exam duration must be between 1 and 480 minutes.
+- Questions can be managed only while an exam is a draft.
+- Questions are displayed in their position order.
+- New questions are added to the end of the exam.
+- A question must have marks greater than zero.
+- Multiple-choice questions must have between two and four options.
+- Multiple-choice questions must have exactly one correct option.
+- Open-text questions do not have answer options.
 - Each student is allowed only one attempt per exam.
 - The server records the attempt's start and expiry times.
 - The system automatically submits an attempt when its time expires.

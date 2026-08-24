@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Lecturer\ClassroomController;
 use App\Http\Controllers\Lecturer\ExamController;
+use App\Http\Controllers\Lecturer\QuestionController;
 use App\Http\Controllers\Lecturer\StudentClassroomAssignmentController;
 use App\Http\Controllers\Lecturer\SubjectController;
 use App\Http\Controllers\ProfileController;
@@ -26,6 +27,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('students/{student}/classroom', [StudentClassroomAssignmentController::class, 'edit'])->name('students.classroom.edit');
             Route::put('students/{student}/classroom', [StudentClassroomAssignmentController::class, 'update'])->name('students.classroom.update');
             Route::resource('exams', ExamController::class);
+            Route::get('exams/{exam}/questions/create', [QuestionController::class, 'create'])->name('exams.questions.create');
+            Route::post('exams/{exam}/questions', [QuestionController::class, 'store'])->name('exams.questions.store');
+            Route::get('exams/{exam}/questions/{question}/edit', [QuestionController::class, 'edit'])->name('exams.questions.edit');
+            Route::put('exams/{exam}/questions/{question}', [QuestionController::class, 'update'])->name('exams.questions.update');
+            Route::delete('exams/{exam}/questions/{question}', [QuestionController::class, 'destroy'])->name('exams.questions.destroy');
         });
 
     Route::middleware('role:student')
