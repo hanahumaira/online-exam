@@ -12,7 +12,7 @@ class ExamPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->isLecturer();
+        return $user->isLecturer() || $user->isStudent();
     }
 
     /**
@@ -20,7 +20,7 @@ class ExamPolicy
      */
     public function view(User $user, Exam $exam): bool
     {
-        return $this->ownsExam($user, $exam);
+        return $this->ownsExam($user, $exam) || $this->isEligibleStudent($user, $exam);
     }
 
     /**
@@ -60,5 +60,16 @@ class ExamPolicy
     private function ownsExam(User $user, Exam $exam): bool
     {
         return $user->isLecturer() && $exam->created_by === $user->id;
+    }
+
+    private function isEligibleStudent(User $user, Exam $exam): bool
+    {
+        if (! $user->isStudent() || $user->classroom_id === null || $exam->published_at === null) {
+            return false;
+        }
+
+        return $exam->classrooms()
+            ->where('classrooms.id', $user->classroom_id)
+            ->exists();
     }
 }

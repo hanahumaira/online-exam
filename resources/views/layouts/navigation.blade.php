@@ -44,6 +44,15 @@
                             {{ __('Exams') }}
                         </x-nav-link>
                     @endif
+
+                    @if (Auth::user()->isStudent())
+                        <x-nav-link
+                            :href="route('student.exams.index')"
+                            :active="request()->routeIs('student.exams.*')"
+                        >
+                            {{ __('Exams') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -129,6 +138,15 @@
                     {{ __('Exams') }}
                 </x-responsive-nav-link>
             @endif
+
+             @if (Auth::user()->isStudent())
+                <x-responsive-nav-link
+                    :href="route('student.exams.index')"
+                    :active="request()->routeIs('student.exams.*')"
+                >
+                    {{ __('Exams') }}
+                </x-responsive-nav-link>
+             @endif
         </div>
 
         <!-- Responsive Settings Options -->

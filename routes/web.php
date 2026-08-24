@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Student\ExamController as StudentExamController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Lecturer\ClassroomController;
 use App\Http\Controllers\Lecturer\ExamController;
@@ -44,6 +45,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('student.')
         ->group(function () {
             Route::get('/dashboard', [DashboardController::class, 'student'])->name('dashboard');
+            Route::get('/exams', [StudentExamController::class, 'index'])->name('exams.index');
+            Route::get('/exams/{exam}', [StudentExamController::class, 'show'])->name('exams.show');
         });
 });
 
