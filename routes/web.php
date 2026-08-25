@@ -10,6 +10,7 @@ use App\Http\Controllers\Lecturer\SubjectController;
 use App\Http\Controllers\Lecturer\ExamClassroomAssignmentController;
 use App\Http\Controllers\Lecturer\ExamPublishingController;
 use App\Http\Controllers\Student\AttemptController;
+use App\Http\Controllers\Lecturer\GradingController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +40,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('exams/{exam}/classrooms', [ExamClassroomAssignmentController::class, 'edit'])->name('exams.classrooms.edit');
             Route::put('exams/{exam}/classrooms', [ExamClassroomAssignmentController::class, 'update'])->name('exams.classrooms.update');
             Route::post('exams/{exam}/publish', [ExamPublishingController::class, 'store'])->name('exams.publish');
+            Route::get('grading', [GradingController::class, 'index'])->name('grading.index');
+            Route::get('grading/{attempt}', [GradingController::class, 'show'])->name('grading.show');
+            Route::put('grading/{attempt}', [GradingController::class, 'update'])->name('grading.update');
         });
 
     Route::middleware('role:student')

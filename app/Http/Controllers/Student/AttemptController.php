@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Student;
 use App\Http\Controllers\Controller;
 use App\Models\Attempt;
 use App\Models\Exam;
+use App\Services\AttemptGradingService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +16,7 @@ use Illuminate\View\View;
 
 class AttemptController extends Controller
 {
-    public function store(Request $request, Exam $exam): RedirectResponse
+    public function store(Request $request, Exam $exam, AttemptGradingService $gradingService): RedirectResponse
     {
         Gate::authorize('view', $exam);
 
@@ -37,10 +38,7 @@ class AttemptController extends Controller
             );
 
         if ($attempt->status === 'in_progress' && now()->gte($attempt->expires_at)) {
-            $attempt->update([
-                'status' => 'expired',
-                'submitted_at' => $attempt->expires_at,
-            ]);
+            $gradingService->finalizeAttempt($attempt, 'expired');
         }
 
         return to_route(
@@ -49,15 +47,17 @@ class AttemptController extends Controller
         );
     }
 
-    public function show(Attempt $attempt): View
+    public function show(Attempt $attempt, AttemptGradingService $gradingService): View
     {
         Gate::authorize('view', $attempt);
 
         if ($attempt->status === 'in_progress' && now()->gte($attempt->expires_at)) {
-            $attempt->update([
-                'status' => 'expired',
-                'submitted_at' => $attempt->expires_at,
-            ]);
+            $gradingService->finalizeAttempt(
+                $attempt,
+                'expired',
+            );
+
+            $attempt->refresh();
         }
 
         $attempt->load([
@@ -79,7 +79,7 @@ class AttemptController extends Controller
         );
     }
 
-    public function update(Request $request, Attempt $attempt): RedirectResponse
+    public function update(Request $request, Attempt $attempt, AttemptGradingService $gradingService): RedirectResponse
     {
         Gate::authorize('view', $attempt);
 
@@ -94,10 +94,10 @@ class AttemptController extends Controller
         }
 
         if (now()->gte($attempt->expires_at)) {
-            $attempt->update([
-                'status' => 'expired',
-                'submitted_at' => $attempt->expires_at,
-            ]);
+            $gradingService->finalizeAttempt(
+                $attempt,
+                'expired',
+            );
 
             return to_route(
                 'student.attempts.show',
@@ -192,16 +192,14 @@ class AttemptController extends Controller
                     ],
                 );
             }
-
-            if ($validated['action'] === 'submit') {
-                $attempt->update([
-                    'status' => 'submitted',
-                    'submitted_at' => now(),
-                ]);
-            }
         });
 
         if($validated['action'] === 'submit') {
+            $gradingService->finalizeAttempt(
+                $attempt,
+                'submitted',
+            );
+
             return to_route('student.attempts.show', $attempt)
                 ->with('success', 'Exam submitted successfully.');
         }

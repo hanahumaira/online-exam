@@ -7,6 +7,11 @@ use App\Models\User;
 
 class AttemptPolicy
 {
+    public function viewAny(User $user): bool
+    {
+        return $user->isLecturer();
+    }
+
     /**
      * Determine whether the user can view the model.
      */
@@ -24,5 +29,16 @@ class AttemptPolicy
         return $this->view($user, $attempt)
             && $attempt->status === 'in_progress'
             && now()->lt($attempt->expires_at);
+    }
+
+    public function grade(User $user, Attempt $attempt): bool
+    {
+        if (! $user->isLecturer() || $attempt->status === 'in_progress') {
+            return false;
+        }
+
+        return $attempt->exam()
+            ->where('created_by', $user->id)
+            ->exists();
     }
 }

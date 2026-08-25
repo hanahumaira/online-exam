@@ -154,7 +154,7 @@
 
                                     <x-input-error 
                                         :messages="$errors->get(
-                                            'text_answers.'{$question->id},
+                                            'text_answers.'.$question->id
                                         )"
                                         class="mt-2"
                                     />
@@ -259,6 +259,23 @@
                                 Results will be available only after grading
                                 and lecturer release.
                             </p>
+
+                            @if (
+                                $attempt->grading_status
+                                === 'awaiting_manual'
+                            )
+                                <p class="mt-4 text-sm text-yellow-700">
+                                    Your attempt is awaiting lecturer grading.
+                                </p>
+                            @elseif (
+                                $attempt->grading_status === 'graded'
+                            )
+                                <p class="mt-4 text-sm text-green-700">
+                                    Grading is complete. Your score will become
+                                    visible only after the lecturer releases
+                                    the results.
+                                </p>
+                            @endif
                     </div>
                 </div>
             @endif

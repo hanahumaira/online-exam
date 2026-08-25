@@ -43,6 +43,13 @@
                         >
                             {{ __('Exams') }}
                         </x-nav-link>
+
+                        <x-nav-link
+                            :href="route('lecturer.grading.index')"
+                            :active="request()->routeIs('lecturer.grading.*')"
+                        >
+                            {{ __('Grading') }}
+                        </x-nav-link>
                     @endif
 
                     @if (Auth::user()->isStudent())
@@ -136,6 +143,13 @@
                     :active="request()->routeIs('lecturer.exams.*')"
                 >
                     {{ __('Exams') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link
+                    :href="route('lecturer.grading.index')"
+                    :active="request()->routeIs('lecturer.grading.*')"
+                >
+                    {{ __('Grading') }}
                 </x-responsive-nav-link>
             @endif
 

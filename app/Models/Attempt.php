@@ -20,6 +20,7 @@ class Attempt extends Model
         'expires_at',
         'submitted_at',
         'status',
+        'grading_status',
         'score',
     ];
 

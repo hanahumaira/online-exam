@@ -82,6 +82,7 @@
 - `submitted_at` (nullable)
 - `status` :`in_progress`, `submitted`, `awaiting_grading`, or `graded`
 - `score` (nullable)
+- `grading_status`
 
 
 ## 10. `answers`
