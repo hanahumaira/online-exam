@@ -95,8 +95,6 @@
 - `awarded_marks` (nullable)
 
 
-###############################
-
 
 ## Table Relationships
 
