@@ -96,6 +96,8 @@ These accounts are for local demonstration only.
 php artisan test
 ```
 
+For a step-by-step user test, follow the [manual testing guide](docs/manual-testing.md).
+
 ## Main Assumptions
 
 - A student belongs to one classroom.
@@ -113,3 +115,4 @@ php artisan test
 
 - [Requirements](docs/requirements.md)
 - [Database design](docs/database-design.md)
+- [Manual testing guide](docs/manual-testing.md)
