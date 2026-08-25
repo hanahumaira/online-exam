@@ -41,4 +41,27 @@ class AttemptPolicy
             ->where('created_by', $user->id)
             ->exists();
     }
+
+    public function viewResults(User $user): bool
+    {
+        return $user->isStudent();
+    }
+
+    public function viewResult(
+        User $user,
+        Attempt $attempt,
+    ): bool {
+        if (
+            ! $user->isStudent()
+            || $attempt->user_id !== $user->id
+            || $attempt->grading_status !== 'graded'
+            || $attempt->score === null
+        ) {
+            return false;
+        }
+
+        return $attempt->exam()
+            ->whereNotNull('results_released_at')
+            ->exists();
+    }
 }

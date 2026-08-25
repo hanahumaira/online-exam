@@ -64,9 +64,13 @@ Build a secure web portal in which lecturers manage classes, subjects, exams, an
 - Incorrect or unanswered multiple-choice questions receive zero marks.
 - Open-text answers require lecturer grading.
 - Awarded marks cannot exceed the question's maximum marks.
-- A result cannot be released while required open-text grading is incomplete.
-- Students cannot view scores before the lecturer releases the results.
-- Students can view only their own attempts and results.
+- Results are released for an entire exam.
+- Results can be released only when the exam has at least one attempt.
+- Results cannot be released while an attempt is still in progress.
+- Results cannot be released until every attempt is fully graded.
+- Releasing results is irreversible.
+- Releasing results closes the exam to new attempts.
+- Students can view only their own released results.
 - Lecturers can manage only records within their authorized scope.
 
 ## 5. Functional Requirements

@@ -20,6 +20,7 @@ class ExamController extends Controller
 
         $query = Exam::query()
             ->whereNotNull('published_at') //remove draft
+            ->whereNull('results_released_at') //hide released
             ->with('subject:id,name,code')
             ->withCount('questions');
 

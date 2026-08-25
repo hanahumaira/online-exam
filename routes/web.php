@@ -12,6 +12,8 @@ use App\Http\Controllers\Lecturer\ExamPublishingController;
 use App\Http\Controllers\Student\AttemptController;
 use App\Http\Controllers\Lecturer\GradingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Lecturer\ResultController as LecturerResultController;
+use App\Http\Controllers\Student\ResultController as StudentResultController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -43,6 +45,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('grading', [GradingController::class, 'index'])->name('grading.index');
             Route::get('grading/{attempt}', [GradingController::class, 'show'])->name('grading.show');
             Route::put('grading/{attempt}', [GradingController::class, 'update'])->name('grading.update');
+            Route::get('results', [LecturerResultController::class, 'index'])->name('results.index');
+            Route::get('results/{exam}', [LecturerResultController::class, 'show'])->name('results.show');
+            Route::post('results/{exam}/release', [LecturerResultController::class, 'release'])->name('results.release');
         });
 
     Route::middleware('role:student')
@@ -55,6 +60,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('exams/{exam}/attempts', [AttemptController::class, 'store'])->name('exams.attempts.store');
             Route::get('attempts/{attempt}', [AttemptController::class, 'show'])->name('attempts.show');
             Route::put('attempts/{attempt}', [AttemptController::class, 'update'])->name('attempts.update');
+            Route::get('results', [StudentResultController::class, 'index'])->name('results.index');
+            Route::get('results/{attempt}', [StudentResultController::class, 'show'])->name('results.show');
         });
 });
 

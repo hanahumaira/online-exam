@@ -57,6 +57,23 @@ class ExamPolicy
         return $this->ownsExam($user, $exam) && $exam->published_at === null;
     }
 
+    public function viewResults(User $user): bool
+    {
+        return $user->isLecturer();
+    }
+
+    public function manageResults(User $user, Exam $exam): bool
+    {
+        return $this->ownsExam($user, $exam)
+            && $exam->published_at !== null;
+    }
+
+    public function releaseResults(User $user, Exam $exam): bool
+    {
+        return $this->manageResults($user, $exam)
+            && $exam->results_released_at === null;
+    }
+
     private function ownsExam(User $user, Exam $exam): bool
     {
         return $user->isLecturer() && $exam->created_by === $user->id;
@@ -64,7 +81,12 @@ class ExamPolicy
 
     private function isEligibleStudent(User $user, Exam $exam): bool
     {
-        if (! $user->isStudent() || $user->classroom_id === null || $exam->published_at === null) {
+        if (
+            ! $user->isStudent()
+            || $user->classroom_id === null
+            || $exam->published_at === null
+            || $exam->results_released_at !== null
+        ) {
             return false;
         }
 

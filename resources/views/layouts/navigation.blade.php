@@ -50,6 +50,13 @@
                         >
                             {{ __('Grading') }}
                         </x-nav-link>
+
+                        <x-nav-link
+                            :href="route('lecturer.results.index')"
+                            :active="request()->routeIs('lecturer.results.*')"
+                        >
+                            {{ __('Results') }}
+                        </x-nav-link>
                     @endif
 
                     @if (Auth::user()->isStudent())
@@ -58,6 +65,13 @@
                             :active="request()->routeIs('student.exams.*')"
                         >
                             {{ __('Exams') }}
+                        </x-nav-link>
+
+                        <x-nav-link
+                            :href="route('student.results.index')"
+                            :active="request()->routeIs('student.results.*')"
+                        >
+                            {{ __('Results') }}
                         </x-nav-link>
                     @endif
                 </div>
@@ -151,6 +165,13 @@
                 >
                     {{ __('Grading') }}
                 </x-responsive-nav-link>
+
+                <x-responsive-nav-link
+                    :href="route('lecturer.results.index')"
+                    :active="request()->routeIs('lecturer.results.*')"
+                >
+                    {{ __('Results') }}
+                </x-responsive-nav-link>
             @endif
 
              @if (Auth::user()->isStudent())
@@ -159,6 +180,13 @@
                     :active="request()->routeIs('student.exams.*')"
                 >
                     {{ __('Exams') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link
+                    :href="route('student.results.index')"
+                    :active="request()->routeIs('student.results.*')"
+                >
+                    {{ __('Results') }}
                 </x-responsive-nav-link>
              @endif
         </div>
