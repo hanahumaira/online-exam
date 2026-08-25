@@ -129,7 +129,7 @@ class QuestionManagementTest extends TestCase
                         '4',
                         '5',
                     ],
-                    'correct_option' => 2,
+                    'correct_option' => '2',
                 ],
             );
 

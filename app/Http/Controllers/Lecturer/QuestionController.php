@@ -57,9 +57,21 @@ class QuestionController extends Controller
             'options' => [Rule::requiredIf($isMultipleChoice), 'array', 'nullable', 'size:4'],
             'options.0' => [Rule::requiredIf($isMultipleChoice), 'string', 'max:1000'],
             'options.1' => [Rule::requiredIf($isMultipleChoice), 'string', 'max:1000'],
-            'options.2' => [Rule::requiredIf($isMultipleChoice), 'string', 'max:1000'],
-            'options.3' => [Rule::requiredIf($isMultipleChoice), 'string', 'max:1000'],
+            'options.2' => ['nullable', 'string', 'max:1000'],
+            'options.3' => ['nullable','string', 'max:1000'],
             'correct_option' => [Rule::requiredIf($isMultipleChoice), 'nullable', 'integer', 'between:0,3'],
+        ], [
+            'options.0.required' =>
+                'Please enter at least two answer options.',
+
+            'options.1.required' =>
+                'Please enter at least two answer options.',
+
+            'correct_option.required' =>
+                'Please select the correct answer.',
+
+            'correct_option.between' =>
+                'The selected correct answer is invalid.',
         ]);
 
         if (
@@ -101,7 +113,8 @@ class QuestionController extends Controller
 
                         $question->options()->create([
                             'text' => $text,
-                            'is_correct' => $index === $validated['correct_option'],
+                            'is_correct' =>
+                                $index === (int) $validated['correct_option'],
                         ]);
                     }
                 }
@@ -155,9 +168,21 @@ class QuestionController extends Controller
             'options' => [Rule::requiredIf($isMultipleChoice), 'array', 'nullable', 'size:4'],
             'options.0' => [Rule::requiredIf($isMultipleChoice), 'string', 'max:1000'],
             'options.1' => [Rule::requiredIf($isMultipleChoice), 'string', 'max:1000'],
-            'options.2' => [Rule::requiredIf($isMultipleChoice), 'string', 'max:1000'],
-            'options.3' => [Rule::requiredIf($isMultipleChoice), 'string', 'max:1000'],
+            'options.2' => ['nullable', 'string', 'max:1000'],
+            'options.3' => ['nullable','string', 'max:1000'],
             'correct_option' => [Rule::requiredIf($isMultipleChoice), 'nullable', 'integer', 'between:0,3'],
+        ], [
+            'options.0.required' =>
+                'Please enter at least two answer options.',
+
+            'options.1.required' =>
+                'Please enter at least two answer options.',
+
+            'correct_option.required' =>
+                'Please select the correct answer.',
+
+            'correct_option.between' =>
+                'The selected correct answer is invalid.',
         ]);
 
         if (
@@ -199,8 +224,8 @@ class QuestionController extends Controller
 
                         $question->options()->create([
                             'text' => $text,
-                            'is_correct' => $index
-                                === $validated['correct_option'],
+                            'is_correct' =>
+                                $index === (int) $validated['correct_option'],
                         ]);
                     }
                 }

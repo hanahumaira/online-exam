@@ -52,7 +52,6 @@
 
                             <dd class="font-medium text-gray-900">
                                 @if ($exam->results_released_at)
-                                    Released on
                                     {{ $exam->results_released_at->format(
                                         'd M Y, g:i A',
                                     ) }}
@@ -86,6 +85,7 @@
                                 <form 
                                     method="POST"
                                     action="{{ route('lecturer.results.release', $exam) }}"
+                                    class="mt-6 border-t border-gray-200 pt-6"
                                     onsubmit="return confirm(
                                         'Release these results? This cannot be undone.'
                                     );"

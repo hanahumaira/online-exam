@@ -184,6 +184,9 @@
                             name="action"
                             value="submit"
                             class="inline-flex items-center rounded-md bg-gray-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white hover:bg-gray-700"
+                            onclick="return confirm(
+                                'Submit this exam now? You will not be able to change your answers afterward.'
+                            );"
                         >
                             Submit Exam
                         </button>
@@ -226,6 +229,7 @@
                             if (remainingSeconds <= 1) {
                                 clearInterval(timer);
 
+                                submitButton.removeAttribute('onclick');
                                 submitButton.click();
                             }
                         }, 1000);

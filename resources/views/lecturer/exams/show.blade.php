@@ -167,9 +167,11 @@
                     @else
                         <div class="mt-6 space-y-4">
                             @foreach ($exam->questions as $question)
-                                <div class="rounded-md border border-gray-200 p-4">
-                                    <div class="flex items-start justify-between gap-4">
-                                        <div>
+                                <div class="rounded-lg border border-gray-200 p-5">
+                                    <div
+                                        class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between"
+                                    >
+                                        <div class="min-w-0">
                                             <p class="text-sm text-gray-500">
                                                 Question {{ $question->position }}
                                                 ·
@@ -177,61 +179,97 @@
                                                     ? 'Multiple Choice'
                                                     : 'Open Text' }}
                                                 ·
-                                                {{ $question->marks }} marks
+                                                {{ number_format(
+                                                    (float) $question->marks,
+                                                    2,
+                                                ) }}
+                                                marks
                                             </p>
 
-                                            <p class="mt-2 font-medium text-gray-900">
+                                            <p class="mt-2 text-base font-medium text-gray-900">
                                                 {{ $question->prompt }}
                                             </p>
-
-                                            @if ($exam->published_at === null)
-                                                <div class="flex items-center gap-3">
-                                                    <a
-                                                        href="{{ route('lecturer.exams.questions.edit', [$exam, $question]) }}"
-                                                        class="text-sm text-indigo-600 hover:text-indigo-900"
-                                                    >
-                                                        Edit
-                                                    </a>
-
-                                                    <form
-                                                        method="POST"
-                                                        action="{{ route('lecturer.exams.questions.destroy', [$exam, $question]) }}"
-                                                        onsubmit="return confirm('Delete this question?');"
-                                                    >
-                                                        @csrf
-                                                        @method('DELETE')
-
-                                                        <button
-                                                            type="submit"
-                                                            class="text-sm text-red-600 hover:text-red-900"
-                                                        >
-                                                            Delete
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            @endif
                                         </div>
 
-                                        @if ($question->type === 'multiple_choice')
-                                       <ul class="mt-4 space-y-2">
-                                @foreach ($question->options as $option)
-                                            <li
-                                                class="{{ $option->is_correct
-                                                    ? 'font-medium text-green-700'
-                                                    : 'text-gray-700' }}"
-                                            >
-                                                {{ $option->text }}
+                                        @if ($exam->published_at === null)
+                                            <div class="flex shrink-0 items-center gap-3">
+                                                <a
+                                                    href="{{ route(
+                                                        'lecturer.exams.questions.edit',
+                                                        [$exam, $question],
+                                                    ) }}"
+                                                    class="text-sm font-medium text-indigo-600 hover:text-indigo-900"
+                                                >
+                                                    Edit
+                                                </a>
 
-                                                @if ($option->is_correct)
-                                                    <span class="text-sm">
-                                                        (Correct)
-                                                    </span>
-                                                @endif
-                                            </li>
-                                            @endforeach
-                                        </ul>
+                                                <form
+                                                    method="POST"
+                                                    action="{{ route(
+                                                        'lecturer.exams.questions.destroy',
+                                                        [$exam, $question],
+                                                    ) }}"
+                                                    onsubmit="return confirm(
+                                                        'Delete this question?'
+                                                    );"
+                                                >
+                                                    @csrf
+                                                    @method('DELETE')
+
+                                                    <button
+                                                        type="submit"
+                                                        class="text-sm font-medium text-red-600 hover:text-red-900"
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            </div>
                                         @endif
                                     </div>
+
+                                    @if ($question->type === 'multiple_choice')
+                                        <div class="mt-5 border-t border-gray-200 pt-4">
+                                            <p class="text-sm font-medium text-gray-700">
+                                                Answer Options
+                                            </p>
+
+                                            <ul class="mt-3 grid gap-3 sm:grid-cols-2">
+                                                @foreach ($question->options as $option)
+                                                    <li
+                                                        class="flex items-center justify-between gap-3 rounded-md border px-4 py-3
+                                                            {{ $option->is_correct
+                                                                ? 'border-green-300 bg-green-50'
+                                                                : 'border-gray-200 bg-gray-50' }}"
+                                                    >
+                                                        <div class="flex min-w-0 items-center gap-3">
+                                                            <span
+                                                                class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white text-sm font-medium text-gray-600 ring-1 ring-gray-200"
+                                                            >
+                                                                {{ $loop->iteration }}
+                                                            </span>
+
+                                                            <span
+                                                                class="break-words
+                                                                    {{ $option->is_correct
+                                                                        ? 'font-medium text-green-800'
+                                                                        : 'text-gray-700' }}"
+                                                            >
+                                                                {{ $option->text }}
+                                                            </span>
+                                                        </div>
+
+                                                        @if ($option->is_correct)
+                                                            <span
+                                                                class="shrink-0 rounded-full bg-green-100 px-2.5 py-1 text-xs font-semibold text-green-800"
+                                                            >
+                                                                Correct
+                                                            </span>
+                                                        @endif
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
                                 </div>
                             @endforeach
                         </div>

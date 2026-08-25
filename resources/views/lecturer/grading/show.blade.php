@@ -97,33 +97,98 @@
                             </p>
 
                             @if ($question->type === 'multiple_choice')
-                                <div class="mt-4 space-y-2">
-                                    @foreach ( $question->options as $option)
-                                        <p
-                                            class="{{ $option->is_correct
-                                                ? 'font-medium text-green-700'
-                                                : 'text-gray-700' }}"
-                                        >
-                                            @if (
-                                                $answer?->question_option_id
-                                                === $option->id
-                                            )
-                                                Student selected:
-                                            @endif
+                                <div class="mt-5 border-t border-gray-200 pt-4">
+                                    <p class="text-sm font-medium text-gray-700">
+                                        Answer Options
+                                    </p>
 
-                                            {{ $option->text }}
+                                    <ul class="mt-3 grid gap-3 sm:grid-cols-2">
+                                        @foreach ($question->options as $option)
+                                            @php
+                                                $isSelected =
+                                                    $answer?->question_option_id
+                                                    === $option->id;
+                                            @endphp
 
-                                            @if ($option->is_correct)
-                                                (Correct)
-                                            @endif
-                                        </p>
-                                    @endforeach
+                                            <li
+                                                class="flex items-center justify-between gap-3 rounded-md border px-4 py-3
+                                                    {{
+                                                        $isSelected && ! $option->is_correct
+                                                            ? 'border-red-300 bg-red-50'
+                                                            : (
+                                                                $option->is_correct
+                                                                    ? 'border-green-300 bg-green-50'
+                                                                    : 'border-gray-200 bg-gray-50'
+                                                            )
+                                                    }}"
+                                            >
+                                                <div class="flex min-w-0 items-center gap-3">
+                                                    <span
+                                                        class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white text-sm font-medium text-gray-600 ring-1 ring-gray-200"
+                                                    >
+                                                        {{ $loop->iteration }}
+                                                    </span>
+
+                                                    <span
+                                                        class="break-words
+                                                            {{
+                                                                $option->is_correct
+                                                                    ? 'font-medium text-green-800'
+                                                                    : (
+                                                                        $isSelected
+                                                                            ? 'font-medium text-red-800'
+                                                                            : 'text-gray-700'
+                                                                    )
+                                                            }}"
+                                                    >
+                                                        {{ $option->text }}
+                                                    </span>
+                                                </div>
+
+                                                <div class="flex shrink-0 flex-wrap justify-end gap-2">
+                                                    @if (
+                                                        $isSelected
+                                                        && $option->is_correct
+                                                    )
+                                                        <span
+                                                            class="rounded-full bg-green-100 px-2.5 py-1 text-xs font-semibold text-green-800"
+                                                        >
+                                                            Selected · Correct
+                                                        </span>
+                                                    @elseif ($isSelected)
+                                                        <span
+                                                            class="rounded-full bg-red-100 px-2.5 py-1 text-xs font-semibold text-red-800"
+                                                        >
+                                                            Student selected
+                                                        </span>
+                                                    @elseif ($option->is_correct)
+                                                        <span
+                                                            class="rounded-full bg-green-100 px-2.5 py-1 text-xs font-semibold text-green-800"
+                                                        >
+                                                            Correct answer
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                    
+                                    <p class="mt-4 font-medium text-gray-900">
+                                        Awarded:
+                                        {{ number_format(
+                                            (float) (
+                                                $answer?->awarded_marks
+                                                ?? 0
+                                            ),
+                                            2,
+                                        ) }}
+                                        /
+                                        {{ number_format(
+                                            (float) $question->marks,
+                                            2,
+                                        ) }}
+                                    </p>
                                 </div>
-                                <p class="mt-4 font-medium text-gray-900">
-                                    Awarded:
-                                    {{ $answer?->awarded_marks ?? 0 }}
-                                    / {{ $question->marks }}
-                                </p>
                             @else
                                 <div class="mt-4 rounded-md bg-gray-50 p-4">
                                     @if ($answer?->text_answer)
@@ -166,7 +231,7 @@
 
                                         <x-input-error
                                             :messages="$errors->get(
-                                                'text_answers.'.$question->id
+                                                'marks.'.$answer->id
                                             )"
                                             class="mt-2"
                                         />

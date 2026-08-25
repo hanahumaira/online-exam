@@ -96,7 +96,7 @@
             name="marks"
             step="0.01"
             min="0.01"
-            max="1000"
+            max="100"
             :value="old('marks', $question?->marks)"
             required
         />
