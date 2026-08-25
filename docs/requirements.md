@@ -2,178 +2,85 @@
 
 ## 1. Objective
 
-Build a secure web portal in which lecturers manage classes, subjects, exams, and grading, while students take only the exams assigned to their class within a server-enforced time limit.
+Build a secure online examination portal where lecturers manage academic data and students take timed exams assigned to their classroom.
 
 ## 2. Actors
 
-- Lecturer : manage academic data (class, subject, exam, result).
-- Student : view exams, complete an exam within its time limit, and view results.
+- Lecturer: manages classrooms, subjects, students, exams, grading and results.
+- Student: takes eligible exams and views released results.
 
-## 3. Scope
-
-- Authentication (Breeze)
-- Lecturer and student roles.
-- Subject management.
-    - Assignment of subjects to classes.
-- Class management
-    - Assignment of students to a class.
-- Exam Management
-    - Creation (multiple-choice and open-text).
-    - Assignment of exams to classes.
-- Result Management *
-    - Automatic marking of multiple-choice answers. \*
-    - Manual marking of open-text answers. \*
-    - Lecturer management and release of results. \*
-    - Student view result. \*
-
-\* Additional feat
-
-## 4. Business Rules
-
-- Only published exams are visible to eligible students.
-- A student can access an exam only when it is assigned to the student's class.
-- Access restrictions must be enforced by the server, not only by hidden buttons or links.
-- Lecturers can assign students only to classrooms they created.
-- Lecturers can manage unassigned students and students in their own classrooms.
-- Lecturers cannot reassign students belonging to another lecturer's classroom.
-- New exams are created as drafts.
-- A lecturer can create an exam only for a subject they created.
-- A lecturer can manage only exams they created.
-- Only draft exams can be edited or deleted.
-- Exam duration must be between 1 and 480 minutes.
-- Questions can be managed only while an exam is a draft.
-- Questions are displayed in their position order.
-- New questions are added to the end of the exam.
-- A question must have marks greater than zero.
-- Multiple-choice questions must have between two and four options.
-- Multiple-choice questions must have exactly one correct option.
-- Open-text questions do not have answer options.
-- An exam can be assigned only to classrooms that include the exam's subject.
-- Lecturers can assign exams only to classrooms they created.
-- Classroom assignments can be changed only while the exam is a draft.
-- An exam requires at least one question and one assigned classroom before publication.
-- Every multiple-choice question must have at least two options and exactly one correct option before publication.
-- Publishing an exam is irreversible.
-- Published exams cannot be edited, deleted, or have their questions or classroom assignments changed.
-- Each student is allowed only one attempt per exam.
-- The server records the attempt's start and expiry times.
-- The system automatically submits an attempt when its time expires.
-- Submitted or expired attempts cannot be modified.
-- Multiple-choice answers are graded automatically.
-- Correct multiple-choice answers receive the question's allocated marks.
-- Incorrect or unanswered multiple-choice questions receive zero marks.
-- Open-text answers require lecturer grading.
-- Awarded marks cannot exceed the question's maximum marks.
-- Results are released for an entire exam.
-- Results can be released only when the exam has at least one attempt.
-- Results cannot be released while an attempt is still in progress.
-- Results cannot be released until every attempt is fully graded.
-- Releasing results is irreversible.
-- Releasing results closes the exam to new attempts.
-- Students can view only their own released results.
-- Lecturers can manage only records within their authorized scope.
-
-## 5. Functional Requirements
+## 3. Functional Requirements
 
 ### Authentication and Authorization
 
-- Users can register, log in, and log out.
-- Public registration creates only student accounts.
-- Lecturer accounts are created using a database seeder.
-- Unauthenticated users cannot access protected pages.
-- Students cannot access lecturer pages or operations.
-- Authorization is checked on every protected server request.
+- Users can register, log in and log out.
+- Public registration creates student accounts.
+- Lecturer accounts are created by a database seeder.
+- Guests cannot access protected pages.
+- Students and lecturers can access only features allowed for their role.
 
-### Subject Management
+### Classroom and Subject Management
 
-- Lecturers can create, view, update, and delete subjects.
-- Each subject has a name and unique code.
-- Lecturers can assign subjects to classes.
-
-### Class Management
-
-- Lecturers can create, view, update, and delete classes.
-- Each class has a name and unique code.
-- Lecturers can assign students to a class.
-- Lecturers can view students belonging to a class.
+- Lecturers can create, view, update and delete their classrooms and subjects.
+- Lecturers can assign students to their classrooms.
+- Lecturers can assign subjects to multiple classrooms.
 
 ### Exam Management
 
-- Lecturers can create, view, update, and delete draft exams.
-- Each exam belongs to one subject.
-- Each exam has a title, instructions, and duration.
-- Lecturers can create multiple-choice questions.
-- Lecturers can create open-text questions.
-- Lecturers can assign exams to eligible classes.
-- Lecturers can publish completed exams.
-- Students can view only published exams assigned to their class.
+- Lecturers can create, update and delete draft exams for their subjects.
+- Exams can contain multiple-choice and open-text questions.
+- A multiple-choice question has two to four options and one correct answer.
+- Lecturers can assign exams only to eligible classrooms.
+- An exam requires a question and classroom assignment before publication.
+- Published exams cannot be modified.
 
 ### Exam Attempts
 
-- Students can start an eligible exam.
-- The system records the attempt's start and expiry times.
-- The system displays the remaining time.
-- The system automatically submits the attempt when time expires. \*
-- Students can submit an attempt before time expires.
-- Students cannot start the same exam more than once.
-- Students cannot modify submitted or expired attempts.
+- Students see only published exams assigned to their classroom.
+- A student can attempt each exam once.
+- The server records the attempt start and expiry times.
+- Students can save answers and submit before the deadline.
+- Attempts are automatically closed when time expires.
+- Submitted or expired attempts cannot be changed.
 
 ### Grading and Results
 
-- The system automatically grades multiple-choice answers. \*
-- Lecturers can manually grade open-text answers. \*
-- The system calculates the total score.
-- Results with ungraded open-text answers remain awaiting grading.
-- Lecturers can review and release completed results. \*
-- Students can view their results only after the lecturer releases them. \*
-- Students cannot view another student's result.
-
-## 6. Non-Functional Requirements
-
-- The application must use Laravel 11.
-- The application must use Laravel Breeze for authentication.
-- Passwords must be securely hashed.
-- The application must use server-side validation.
-- Validation errors must be clearly displayed to users.
-- Forms must use CSRF protection.
-- Access control must be enforced on the server.
-- Database relationships must use foreign-key constraints.
-- Exam submission and grading must maintain data consistency.
-- The interface should work on desktop and mobile screen sizes.
-- Critical features should be covered by automated tests.
-- The application must be installable by following the README.
-- The `.env` file and other secrets must not be committed to Git.
-
-## 7. Flows
-
-### Lecturer Creates an Exam
-
-- Lecturer logs in.
-- Lecturer creates a subject.
-- Lecturer creates a class.
-- Lecturer assigns the subject and students to the class.
-- Lecturer creates a draft exam.
-- Lecturer adds multiple-choice or open-text questions.
-- Lecturer assigns the exam to eligible classes.
-- Lecturer publishes the exam.
-
-### Student Takes an Exam
-
-- Student logs in.
-- Student views published exams assigned to their class.
-- Student starts an exam.
-- The server records the start and expiry times.
-- Student answers the questions.
-- The system displays the remaining time.
-- Student submits the exam, or the system submits it when time expires.
 - Multiple-choice answers are graded automatically.
-- The attempt waits for lecturer grading if it contains open-text answers.
+- Lecturers manually grade answered open-text questions.
+- Awarded marks cannot exceed the question marks.
+- Results cannot be released while attempts are active or grading is incomplete.
+- Result release is irreversible.
+- Students can view only their own released results.
 
-### Lecturer Grades and Releases Results
+## 4. Business Rules
 
-- Lecturer views attempts awaiting grading.
-- Lecturer reviews the student's open-text answers.
-- Lecturer awards marks for each open-text answer.
-- The system calculates the final score.
-- Lecturer releases the completed results.
-- Student can view the released result.
+- A student belongs to one classroom.
+- A classroom can have multiple subjects.
+- A subject can belong to multiple classrooms.
+- An exam belongs to one subject and can be assigned to multiple classrooms.
+- Lecturers manage only records they own.
+- New exams are drafts.
+- Exam duration is between 1 and 480 minutes.
+- Publishing and result release are irreversible.
+- Access restrictions and deadlines are enforced by the server.
+
+## 5. Non-Functional Requirements
+
+- Use Laravel 11 with Laravel Breeze.
+- Use MySQL and foreign-key constraints.
+- Hash passwords securely.
+- Validate requests on the server and display clear errors.
+- Protect forms with CSRF tokens.
+- Support desktop and mobile layouts.
+- Cover critical behaviour with automated tests.
+- Keep `.env` and secrets out of Git.
+- Provide installation instructions in the README.
+
+## 6. Main Flow
+
+- Lecturer creates a classroom and subject, then assigns students and the subject to the classroom.
+- Lecturer creates an exam, adds questions, assigns a classroom and publishes it.
+- Student starts the exam, answers questions and submits before the deadline or is automatically timed out.
+- The system grades multiple-choice answers.
+- Lecturer grades open-text answers and releases the completed results.
+- Student views the released result.

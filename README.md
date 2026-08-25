@@ -1,66 +1,115 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Online Examination Portal
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A portal for lecturers to manage classes, subjects, exams and results, and for students to take timed exams assigned to their class.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Lecturer and student authentication with Laravel Breeze.
+- Role-based authorization enforced by the server.
+- Classroom, subject and student-class assignment management.
+- Draft exams with multiple-choice and open-text questions.
+- Exam assignment to eligible classrooms and irreversible publishing.
+- One server-timed attempt per student and exam.
+- Automatic submission when time expires.
+- Automatic multiple-choice grading and manual open-text grading.
+- Lecturer-controlled result release and student result viewing.
+- Server-side validation, CSRF protection and automated tests.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Technology
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 8.2+
+- Laravel 11
+- Laravel Breeze
+- MySQL
+- Blade, Alpine.js and Tailwind CSS
+- PHPUnit
 
-## Learning Laravel
+## Setup
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 1. Install the project
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```bash
+git clone https://github.com/hanahumaira/online-exam.git
+cd online-exam
+composer install
+npm install
+cp .env.example .env
+php artisan key:generate
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 2. Configure MySQL
 
-## Laravel Sponsors
+Create a MySQL database, then update these values in `.env`:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=online_exams
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-### Premium Partners
+### 3. Create the tables and demo accounts
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+```bash
+php artisan migrate --seed
+```
 
-## Contributing
+### 4. Run the application
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Run:
 
-## Code of Conduct
+```bash
+composer run dev
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+In another terminal, run:
 
-## Security Vulnerabilities
+```bash
+php artisan schedule:work
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Open `http://127.0.0.1:8000`.
 
-## License
+## Demo Accounts
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Lecturer:
+
+```text
+Email: lecturer@example.com
+Password: password
+```
+
+Student:
+
+```text
+Email: student@example.com
+Password: password
+```
+
+These accounts are for local demonstration only.
+
+## Testing
+
+```bash
+php artisan test
+```
+
+## Main Assumptions
+
+- A student belongs to one classroom.
+- A classroom can have multiple subjects, and a subject can belong to multiple classrooms.
+- An exam belongs to one subject and can be assigned to multiple classrooms.
+- Public registration creates student accounts; lecturer accounts are seeded.
+- A student has one attempt per exam.
+- Only published exams assigned to the student's classroom are accessible.
+- Multiple-choice answers are graded automatically.
+- Open-text answers require lecturer grading.
+- Students see results only after the lecturer releases them.
+- Exam deadlines are enforced by the server, not only by JavaScript.
+
+## Documentation
+
+- [Requirements](docs/requirements.md)
+- [Database design](docs/database-design.md)
