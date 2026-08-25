@@ -48,6 +48,7 @@ DB_PORT=3306
 DB_DATABASE=online_exams
 DB_USERNAME=root
 DB_PASSWORD=
+APP_TIMEZONE=Asia/Kuala_Lumpur
 ```
 
 ### 3. Create the tables and demo accounts
@@ -110,6 +111,7 @@ For a step-by-step user test, follow the [manual testing guide](docs/manual-test
 - Open-text answers require lecturer grading.
 - Students see results only after the lecturer releases them.
 - Exam deadlines are enforced by the server, not only by JavaScript.
+- Dates and deadlines use Malaysia time (`Asia/Kuala_Lumpur`).
 
 ## Documentation
 
